@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="bau">
+  <head>
+    <title>Bau</title>
+    <meta charset="utf-8"> 
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/lib/bootstrap.css') }}">
+    <link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/index.css') }}">
+    <link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/home.css') }}">
+    <!-- <link rel=stylesheet type=text/css href="{{ url_for('static', filename='fonts/font-awesome-4.5.0/css/font-awesome.min.css') }}"> -->
+
+    <!-- <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet" media="screen"> -->
+
+    <script src="{{ url_for('static', filename='js/lib/jquery-1.9.1.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/lib/bootstrap.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/lib/angular.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/lib/angular-ui-router.min.js') }}"></script>
+
+    <!-- Application -->    
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/route.js') }}"></script>
+
+    <!-- Controllers -->
+    <script src="{{ url_for('static', filename='js/controllers/home.js') }}"></script>
+
+    </head>
+  <body>
+      <nav class="navbar navbar-inverse navbar-fixed-top top-nav" >
+        <div class="container-fluid">
+            <div class="navbar-header">
+              <a class="navbar-brand" href="#">BAU</a>
+            </div>
+              <ul class="nav navbar-nav inside-navbar">
+                  <li><a href="#section1">Schedule</a></li>
+                  <li><a href="#section2">Employees</a></li>
+              </ul>
+              <ul class="nav navbar-nav navbar-right right-navbar">
+                <li><a href="/login"><i class="fa fa-sign-in" aria-hidden="true"></i>&nbsp;Login</a></li>
+                <li><a href="/register"><i class="fa fa-book fa-fw" aria-hidden="true"></i>&nbsp;Register</a></li>
+              </ul>
+          
+        </div>
+      </nav>
+     
+      <br><br><br>
+      
+
+      <div class="main-container col-lg-12 col-md-12 col-sm-12" ui-view></div>
+     
+
+  </body>
+</html>
+
