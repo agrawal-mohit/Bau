@@ -4,24 +4,37 @@ from flask_migrate import Migrate, MigrateCommand
 from flask import Flask
 from flask_mongoengine import MongoEngine
 
+from app.mod_bau.models import Engineer
+
 import os, sys
 import config
 from config import BASE_DIR
 from app import app, db
-
-sys.path.append(BASE_DIR)
-
-
+import json
+import pdb
 
 
-#BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir))
-
+if BASE_DIR not in sys.path:
+	sys.path.append(BASE_DIR)
 
 
 
 migrate = Migrate(app, db)
 manager = Manager(app)
 
+
+
+@manager.command
+def init():
+	with open(os.path.join(BASE_DIR, 'app/data/engineers.json')) as data_file:
+		data = json.load(data_file)
+		for eng_data in data:
+			try:
+				eng = Engineer(**eng_data)
+				eng.save()
+			except Exception as e:
+				print(e)
+			
 
 manager.add_command('db', MigrateCommand)
 manager.add_command('runserver', Server(

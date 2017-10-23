@@ -3,22 +3,15 @@ from flask import Blueprint, request, render_template, \
                   flash, g, session, redirect, url_for
 
 
-
+from app.mod_bau.services import ScheduleGenerator
 
 import json
-import sys, traceback
-import csv
-from flask import make_response
-from flask import send_file
 from flask import render_template
-import os
-import jinja2
 from app import db
 from bson import json_util
 import json
 import pdb
-
-
+import datetime
 
 
 # Define the blueprint: 'rec', set its url prefix: app.url/mintwalk/api
@@ -54,8 +47,9 @@ def index():
 
 
 @mod_bau.route('schedule', methods=['GET'])
-def index():
-	return render_template('index.html')
+def schedule():
+	schedule = ScheduleGenerator.create()
+	return schedule
 
 
 # # Set the route and accepted methods

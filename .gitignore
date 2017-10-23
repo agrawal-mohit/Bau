@@ -7,5 +7,5 @@ __pycache__
 .DS_Store
 *.log
 .idea/
-./venv
+venv
 
