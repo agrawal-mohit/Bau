@@ -10,9 +10,6 @@ class Config(object):
     TESTING = False
     CSRF_ENABLED = True
     SECRET_KEY = 'this-really-needs-to-be-changed'
-    #MONGODB_SETTINGS = {
-    #    'host': 'mongodb://localhost:27017/Fundsguru'
-    #}
     MONGODB_SETTINGS = {
         'db': 'bau',
         'host': '127.0.0.1',

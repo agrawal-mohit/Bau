@@ -17,7 +17,7 @@ import pdb
 
 
 
-# Define the blueprint: 'rec', set its url prefix: app.url/mintwalk/api
+# Define the blueprint
 mod_bau = Blueprint('bau', __name__, url_prefix='/')
 
 
