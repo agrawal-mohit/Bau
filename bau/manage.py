@@ -34,7 +34,9 @@ def init():
 				eng.save()
 			except Exception as e:
 				print(e)
-			
+			else:
+				print("Engineers' records added to database")
+
 
 manager.add_command('db', MigrateCommand)
 manager.add_command('runserver', Server(
@@ -43,6 +45,7 @@ manager.add_command('runserver', Server(
 		host='0.0.0.0',
 		port=9090
 	))
+
 if __name__ == '__main__':
     manager.run()
     print("Server running at localhost:9000")

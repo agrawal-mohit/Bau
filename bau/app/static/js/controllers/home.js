@@ -1,6 +1,12 @@
-app.controller('HomeCtrl', function($scope) {
+app.controller('HomeCtrl', function($scope, ScheduleService) {
 
-	console.log("This is HomeCtrl");
+	
+   $scope.show_shift = function() {
+      ScheduleService.get_todays_shift()
+      .then(function(shift){
+         $scope.todays_shift = shift
+      })
+   }
    
 })
 

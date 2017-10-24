@@ -1,17 +1,20 @@
 # Import flask dependencies
 from flask import Blueprint, request, render_template, \
                   flash, g, session, redirect, url_for
-
+from mongoengine.queryset import DoesNotExist
 
 from app.mod_bau.services import ScheduleGenerator
+from app.mod_bau.models import Schedule
 
-import json
+import jsonify
 from flask import render_template
 from app import db
 from bson import json_util
 import json
 import pdb
 import datetime
+import pdb
+
 
 
 # Define the blueprint: 'rec', set its url prefix: app.url/mintwalk/api
@@ -46,25 +49,23 @@ def index():
 	return render_template('index.html')
 
 
-@mod_bau.route('schedule', methods=['GET'])
-def schedule():
-	schedule = ScheduleGenerator.create()
-	return schedule
+@mod_bau.route('shift', methods=['GET'])
+def shift():
+	# Returns today's shift allotments
+	today = datetime.datetime.now().date()
 
+	try:
+		todays_shift = Schedule.get_shift(today)
+	except:
+		# Generate a new schedule for the current period if no shifts alloted for today
+		schedule = []
+		while(not schedule):
+			# If the schedule returned is empty in the case of exception, it is calculated again
+			schedule = ScheduleGenerator.generate()
 
-# # Set the route and accepted methods
-# @mod_bau.route('login', methods=['GET'])
-# def login():
-#     form = SigninForm()
-#     return render_template("auth/signin.html", form=form)
+		todays_shift = Schedule.get_shift(today)
 
-# # Set the route and accepted methods
-# @mod_bau.route('register', methods=['GET'])
-# def register():
-#     form = SignupForm()
-#     return render_template("auth/signup.html", form=form)
-
-
+	return json.dumps(todays_shift)
 
 
 
