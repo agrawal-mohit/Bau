@@ -12,22 +12,20 @@
 ### How do I get set up? ###
 
 * Create and activate virtual environment with python 3
-
-$ virtualenv -p python3 venv
-
-$ source venv/bin/activate
+    $ virtualenv -p python3 venv
+    $ source venv/bin/activate
 
 
 * Install and run MongoDB on port 27017
 
 * Install dependencies from the requirements.txt file
-$ pip install -r requirements.txt
+    $ pip install -r requirements.txt
 
 
 * Initialize  - Add engineer data to database
-$ python manage.py init
+    $ python manage.py init
 
 * Run the application
-$ python manage.py runserver
+    $ python manage.py runserver
 
 * Goto localhost:9090 to interact with the UI 
