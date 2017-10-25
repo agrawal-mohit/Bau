@@ -3,6 +3,8 @@ from app import db
 from mongoengine import *
 from mongoengine.fields import StringField
 from mongoengine.fields import DateTimeField
+from mongoengine.queryset import DoesNotExist
+
 from datetime import datetime
 import pdb
 
@@ -31,13 +33,15 @@ class Schedule(Document):
 
 
 	def get_shift(today):
-		shift_obj = Schedule.objects(date=today).exclude('id').get().to_mongo().to_dict()
-		shift_obj['date'] = shift_obj['date'].strftime("%d-%m-%Y")
-		return shift_obj
+		try:
+			shift_obj = Schedule.objects(date=today).exclude('id').get().to_mongo().to_dict()
+			shift_obj['date'] = shift_obj['date'].strftime("%d-%m-%Y")
+			return shift_obj
+		except DoesNotExist:
+			raise Exception()
 
 	def get_records(start_date, end_date):
 		records = []
-		pdb.set_trace()
 		docs = Schedule.objects(date__lte=end_date, date__gte=start_date).exclude('id')
 		for doc in docs:
 			shift_obj = doc.to_mongo().to_dict()

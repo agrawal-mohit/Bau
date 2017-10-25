@@ -1,6 +1,10 @@
 
 
 import datetime
+import pdb
+import json
+
+
 
 class ConsecutiveRule(object):
 
@@ -15,14 +19,14 @@ class ConsecutiveRule(object):
 
 		if(date == datetime.datetime.now().date()):
 			# This is the starting of the defined period so allotment is valid
-			print("consecutive :  pass1 ")
+			print("ConsecutiveRule :  pass1 ")
 			return True
 		elif ((schedule[previous_day].get('1', {'_id' : ''})['_id'] != candidateId ) & (schedule[previous_day].get('2', {'_id' : ''})['_id'] != candidateId )):
 			# This candidate did not have a shift previous day so allotment is valid
-			print("consecutive :  pass2 ")
+			print("ConsecutiveRule :  pass2 ")
 			return True
 
-		print("consecutive :  fail ")
+		print("ConsecutiveRule :  fail ")
 
 		return False
 
@@ -39,18 +43,28 @@ class OneShiftRule(object):
 			# This is the first shift so allotment is valid
 			return True
 		if (schedule[this_day]['1']['_id'] == candidateId):
-			print("oneshift :  fail ")
+			print("OneShiftRule :  fail ")
 			return False
 		else:
-			print("oneshift :  pass 2`")
+			print("OneShiftRule :  pass")
 			return True
 
 class OneDayPerPeriodRule(object):
 
 	@staticmethod
-	def isValid(candidateId, date, shift, schedule):
+	def isValid(candidateId, date, last_period_schedule):
+		if(not json.loads(last_period_schedule)):
+			return True
+		for schedule in json.loads(last_period_schedule):
+			for shift, engineer in schedule['shift'].items():
+				if (candidateId == engineer['_id']):
+					print("OneDayPerPeriodRule : pass")
+					return True
+		pdb.set_trace()
+		print("OneDayPerPeriodRule : fail")
+		return False
 
-		this_day = date.strftime("%d-%m-%Y")
+
 
 
 

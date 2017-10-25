@@ -5,6 +5,7 @@ from flask import Flask
 from flask_mongoengine import MongoEngine
 
 from app.mod_bau.models import Engineer
+from app.mod_bau.services import ScheduleGenerator
 
 import os, sys
 import config
@@ -26,6 +27,7 @@ manager = Manager(app)
 
 @manager.command
 def init():
+	# Adding engineer's records to the database
 	with open(os.path.join(BASE_DIR, 'app/data/engineers.json')) as data_file:
 		data = json.load(data_file)
 		for eng_data in data:
@@ -36,6 +38,7 @@ def init():
 				print(e)
 			else:
 				print("Engineers' records added to database")
+
 
 
 manager.add_command('db', MigrateCommand)

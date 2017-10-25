@@ -60,7 +60,7 @@ def shift():
 		schedule = []
 		while(not schedule):
 			# If the schedule returned is empty in the case of exception, it is generated again
-			schedule = ScheduleGenerator.generate(initializing=False)
+			schedule = ScheduleGenerator.generate()
 
 		todays_shift = Schedule.get_shift(today)
 
