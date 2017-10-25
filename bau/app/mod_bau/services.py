@@ -53,10 +53,10 @@ class ScheduleGenerator(object):
 						attempt += 1
 						if (attempt == len(candidates_pool)):
 							return []
-		
+
 		for date,shift in schedule.items():
 			try:
-				entry = Schedule(date=date,shift=shift)
+				entry = Schedule(date=datetime.datetime.strptime(date, "%d-%m-%Y"),shift=shift)
 				entry.save()
 			except Exception as e:
 				print(e)
