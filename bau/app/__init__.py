@@ -4,17 +4,6 @@ import os
 from flask import Flask, render_template
 from flask_mongoengine import MongoEngine
 from flask_bcrypt import Bcrypt
-from flask_login import LoginManager
-from flask_wtf import CsrfProtect
-
-# import pytz
-# from pytz import utc
-from datetime import datetime
-
-
-import csv
-import logging
-import datetime
 import config
 
 # Define the WSGI application object
@@ -27,7 +16,7 @@ db = MongoEngine(app)
 bcrypt = Bcrypt(app)
 app.debug = True
 #CsrfProtect(app)
-# Import a module / component using its blueprint handler variable (mod_user)
+# Import a module / component using its blueprint handler variable (mod_bau)
 
 from app.mod_bau.controllers       import mod_bau          as bau_module
 
@@ -35,30 +24,6 @@ from app.mod_bau.controllers       import mod_bau          as bau_module
 # Register blueprint(s)
 app.register_blueprint(bau_module)
 
-
-"""
-jobstores = {
-    'mongo': MongoDBJobStore()
-}
-executors = {
-    'default': ThreadPoolExecutor(20),
-    'processpool': ProcessPoolExecutor(5)
-}
-job_defaults = {
-    'coalesce': False,
-    'max_instances': 3
-}
-
-print(datetime.utcnow().replace(tzinfo = pytz.utc))
-
-scheduler = BackgroundScheduler(jobstores=jobstores, executors=executors, job_defaults=job_defaults, timezone=utc)
-	
-#scheduler.add_job(fetch_data, 'interval', minutes=1)
-scheduler.add_job(fetch_amfi_data, 'cron', day_of_week='mon-fri', hour=11, minute=41, end_date='2016-12-31')
-
-scheduler.start()
-
-"""
 
 # Exception Handling
 
