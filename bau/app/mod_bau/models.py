@@ -21,6 +21,9 @@ class Engineer(Document):
 		return engineers_list
 
 
+class Shift(EmbeddedDocument):
+	shiftId = IntField()
+
 
 class Schedule(Document):
 	date = DateTimeField(unique=True)
@@ -32,10 +35,10 @@ class Schedule(Document):
 		shift_obj['date'] = shift_obj['date'].strftime("%d-%m-%Y")
 		return shift_obj
 
-	def get_records(today):
+	def get_records(start_date, end_date):
 		records = []
 		pdb.set_trace()
-		docs = Schedule.objects(date__lte=today).exclude('id').get()
+		docs = Schedule.objects(date__lte=end_date, date__gte=start_date).exclude('id')
 		for doc in docs:
 			shift_obj = doc.to_mongo().to_dict()
 			shift_obj['date'] = shift_obj['date'].strftime("%d-%m-%Y")

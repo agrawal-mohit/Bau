@@ -31,17 +31,20 @@ class ScheduleGenerator(object):
 		return pool
 
 
-	def generate():
+	def generate(initializing=False):
 		schedule = {}
+		last_period_schedule = []
 		candidates_pool = ScheduleGenerator.engineers_pool()
 
 		for date in ScheduleGenerator.period_dates():
 			schedule[date.strftime("%d-%m-%Y")] = {}
 			for shift in range(1, 1+int(SHIFT_PER_PERIOD/PERIOD_DAYS)):
 				allocated = False
+				last_period_schedule = ScheduleGenerator.get_last_period_schedule(date) # Returns the schedule of last PERIOD_DAYS days 
+				pdb.set_trace()
 				while(not allocated):
-					candidate = random.choice(candidates_pool) # Randomly picking a candidate from the pool
-					if (ConsecutiveRule.isValid(candidate['_id'], date, schedule) & OneShiftRule.isValid(candidate['_id'], date, shift, schedule )):
+					
+					if (ConsecutiveRule.isValid(candidate['_id'], date, schedule) & OneShiftRule.isValid(candidate['_id'], date, shift, schedule) & (initializing | OneDayPerPeriodRule.isValid(candidate['_id'], date, last_period_schedule))):
 						schedule[date.strftime("%d-%m-%Y")][str(shift)] = candidate
 						candidates_pool.pop(candidates_pool.index(candidate))
 						allocated = True
@@ -62,5 +65,23 @@ class ScheduleGenerator(object):
 				print(e)
 
 		return json.dumps(schedule)
-		
+
+
+	def last_period_dates():
+
+		this_day = datetime.datetime.now().date()
+		last_period_dates = []
+
+		while (len(last_period_dates) < (PERIOD_DAYS)):
+			if (this_day.strftime("%a") not in ['Sat', 'Sun']):
+				last_period_dates.append(this_day)
+			this_day += datetime.timedelta(days=-1)
+
+		return last_period_dates
+	
+	def get_last_period_schedule(end_date):
+		pdb.set_trace()
+		period_start_date = min(ScheduleGenerator.last_period_dates())
+		period_schedule = Schedule.get_records(start_date=period_start_date, end_date=end_date)
+		return json.dumps(period_schedule)
 

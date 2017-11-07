@@ -37,7 +37,6 @@ class OneShiftRule(object):
 		
 		if (shift ==1):
 			# This is the first shift so allotment is valid
-			print("oneshift :  pass 1")
 			return True
 		if (schedule[this_day]['1']['_id'] == candidateId):
 			print("oneshift :  fail ")
@@ -45,4 +44,13 @@ class OneShiftRule(object):
 		else:
 			print("oneshift :  pass 2`")
 			return True
+
+class OneDayPerPeriodRule(object):
+
+	@staticmethod
+	def isValid(candidateId, date, shift, schedule):
+
+		this_day = date.strftime("%d-%m-%Y")
+
+
 

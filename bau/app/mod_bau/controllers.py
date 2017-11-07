@@ -53,15 +53,14 @@ def index():
 def shift():
 	# Returns today's shift allotments
 	today = datetime.datetime.now().date()
-
 	try:
 		todays_shift = Schedule.get_shift(today)
 	except:
 		# Generate a new schedule for the current period if no shifts alloted for today
 		schedule = []
 		while(not schedule):
-			# If the schedule returned is empty in the case of exception, it is calculated again
-			schedule = ScheduleGenerator.generate()
+			# If the schedule returned is empty in the case of exception, it is generated again
+			schedule = ScheduleGenerator.generate(initializing=False)
 
 		todays_shift = Schedule.get_shift(today)
 
