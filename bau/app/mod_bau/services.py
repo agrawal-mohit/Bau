@@ -26,9 +26,14 @@ class ScheduleGenerator(object):
 		return period_dates
 
 	def engineers_pool():
-		pool = []
+		pool = {}
+		# Generating 2 sets of lists to pick from for each half of the period
+		# This is done to ensure an engineer gets a shift each week even if randomly
+		# to have better chances of alloting 1 day of support each period
+
 		for i in range(SHIFT_PER_ENGINEER_PER_PERIOD):
-			pool.extend(Engineer.list())
+			# pool has sets 1 & 2 for first and second half of the period respectively
+			pool[i+1] = Engineer.list()
 		return pool
 
 
@@ -36,8 +41,10 @@ class ScheduleGenerator(object):
 		schedule = {}
 		last_period_schedule = []
 		candidates_pool = ScheduleGenerator.engineers_pool()
-
-		for date in ScheduleGenerator.period_dates():
+		period_dates = ScheduleGenerator.period_dates()
+		for i, date in enumerate(period_dates):
+			period_section = int((i) // (len(period_dates)/2) + 1)
+			print("Date : ", date, " | Section : ", period_section)
 			datekey = date.strftime("%d-%m-%Y")
 
 			schedule[datekey] = {}
@@ -46,11 +53,11 @@ class ScheduleGenerator(object):
 				allocated = False
 				attempts = 0
 				while(not allocated):
-					candidate = random.choice(candidates_pool) # Randomly picking a candidate from the pool
+					candidate = random.choice(candidates_pool[period_section]) # Randomly picking a candidate from the pool
 					print("Candidate : ", candidate)
 					if (ConsecutiveRule.isValid(candidate['_id'], date, schedule) & OneShiftRule.isValid(candidate['_id'], date, shift, schedule) & (initializing | OneDayPerPeriodRule.isValid(candidate['_id'], date, last_period_schedule))):
 						schedule[datekey][str(shift)] = candidate
-						candidates_pool.pop(candidates_pool.index(candidate))
+						candidates_pool[period_section].pop(candidates_pool[period_section].index(candidate))
 						allocated = True
 						print("Alloted!")
 					else:
@@ -60,7 +67,7 @@ class ScheduleGenerator(object):
 						# In this case the rules are likely to be not satisfied and the generator is ran again
 						attempts += 1
 						print(attempts)
-						if (attempts == SHIFT_PER_PERIOD*5):
+						if (attempts == SHIFT_PER_PERIOD):
 							return []
 		
 		for date,shift in schedule.items():
